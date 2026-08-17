@@ -69,7 +69,7 @@ Variants {
             // --- IPC CONTROLS
             // =========================================================
             IpcHandler {
-                target: "floating"
+                target: "floating" + modelData.name
 
                 function setIndex(idx: string) {
                     let newIdx = parseInt(idx);

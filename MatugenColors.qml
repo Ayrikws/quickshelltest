@@ -5,6 +5,7 @@ import Quickshell.Io
 Item {
     id: root
 
+    // Explicitly typed as 'color' for strict QML binding
     property color base: "#1e1e2e"
     property color mantle: "#181825"
     property color crust: "#11111b"
