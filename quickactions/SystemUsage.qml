@@ -63,17 +63,16 @@ Item {
     property color textPrimary: cText
     property color textSecondary: cSubtext0
     property color bgSurface: cSurface0
-    property string iconFont: font.family 
+    property string iconFont: "JetBrainsMono Nerd Font"
 
     function alpha(color, a) { return Qt.rgba(color.r, color.g, color.b, a); }
 
     property bool widgetVisible: parent !== null && parent.visible !== undefined ? parent.visible : true
     
     property real globalWavePhase: 0.0
-    NumberAnimation on globalWavePhase {
-        from: 0; to: Math.PI * 2; duration: 1800; loops: Animation.Infinite; running: root.widgetVisible
+		NumberAnimation on globalWavePhase {
+        from: 0; to: Math.PI * 2; duration: 4000; loops: Animation.Infinite; running: root.widgetVisible
     }
-
     Component.onCompleted: SysData.subscribe()
     Component.onDestruction: SysData.unsubscribe()
 
@@ -122,48 +121,21 @@ Item {
         onTriggered: { diskProc.running = false; diskProc.running = true; }
     }
 
-    Process {
+Process {
         id: diskProc
-        command: ["bash", "-c", "df -h ~ | awk 'NR==2{printf(\"%s;%s / %s;\", $5, $3, $2)}'; du -sh ~/.config ~/.cache ~/.local/share ~/Downloads ~/Documents ~/Pictures ~/Videos ~/Music ~/Projects ~/Games 2>/dev/null | sort -hr | head -n 5 | awk '{printf(\"%s|%s,\", $1, $2)}'"]
+        // Simplified to only run df -h, avoiding the recursive directory scan
+        command: ["bash", "-c", "df -h ~ | awk 'NR==2{printf(\"%s;%s / %s;\", $5, $3, $2)}'"]
         stdout: StdioCollector {
             onStreamFinished: {
                 let text = this.text ? this.text.trim() : "";
                 if (!text) return;
                 
                 var parts = text.split(";");
-                if (parts.length >= 3) {
+                if (parts.length >= 2) {
                     root.diskUsagePercent = parseFloat(parts[0].replace('%', '')) / 100.0;
                     root.diskUsageText = parts[1];
-                    
-                    var folderList = parts[2].split(",").filter(str => str.length > 0);
-                    var newFolders = [];
-                    var maxVal = 0;
-                    
-                    for (var i = 0; i < folderList.length; i++) {
-                        var fp = folderList[i].split("|");
-                        if (fp.length === 2) {
-                            var sizeStr = fp[0];
-                            var pathStr = fp[1].split("/").pop(); 
-                            
-                            var num = parseFloat(sizeStr);
-                            if (sizeStr.indexOf('G') !== -1) num *= 1024;
-                            if (sizeStr.indexOf('M') !== -1) num *= 1;
-                            if (sizeStr.indexOf('K') !== -1) num /= 1024;
-                            
-                            if (num > maxVal) maxVal = num;
-                            newFolders.push({ name: pathStr, sizeStr: sizeStr, rawSize: num });
-                        }
-                    }
-                    
-                    var finalModel = [];
-                    for (var j = 0; j < newFolders.length; j++) {
-                        finalModel.push({
-                            name: newFolders[j].name,
-                            size: newFolders[j].sizeStr,
-                            relative: maxVal > 0 ? newFolders[j].rawSize / maxVal : 0
-                        });
-                    }
-                    root.diskFolders = finalModel;
+                    // Removed the folder array parsing to prevent errors
+                    root.diskFolders = []; 
                 }
             }
         }
@@ -242,11 +214,11 @@ Item {
                 ctx.restore();
             }
 
-            Connections {
-                target: root
-                enabled: root.widgetVisible && ls.value > 0
-                function onGlobalWavePhaseChanged() { fluidCanvas.requestPaint(); }
-            }
+Connections {
+    target: root
+    enabled: root.widgetVisible && ls.value > 0
+    function onGlobalWavePhaseChanged() { fluidCanvas.requestPaint(); }
+}
         }
 
         Item {
