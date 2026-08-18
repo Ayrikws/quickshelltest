@@ -86,8 +86,6 @@ PanelWindow {
 
         MatugenColors { id: _theme }
 
-        property var blobPalette1: [_theme.mauve, _theme.blue, _theme.peach, _theme.green, _theme.pink]
-        property var blobPalette2: [_theme.sapphire, _theme.teal, _theme.maroon, _theme.yellow, _theme.red]
 
         property real globalOrbitAngle: 0
         NumberAnimation on globalOrbitAngle {
@@ -190,10 +188,17 @@ PanelWindow {
                     border.width: 1
                     clip: true
 
-                    property color blob1Color: contentWrapper.blobPalette1[index % 5]
-                    property color blob2Color: contentWrapper.blobPalette2[index % 5]
+property color blob1Color: {
+                        var colors = [_theme.mauve, _theme.blue, _theme.peach, _theme.green, _theme.pink];
+                        return colors[index % 5] || "transparent";
+                    }
+                    
+                    property color blob2Color: {
+                        var colors = [_theme.sapphire, _theme.teal, _theme.maroon, _theme.yellow, _theme.red];
+                        return colors[index % 5] || "transparent";
+                    }
 
-                    Rectangle {
+					Rectangle {
                         width: parent.width * 0.7; height: width; radius: width / 2
                         x: (parent.width / 2 - width / 2) + Math.cos(contentWrapper.globalOrbitAngle * 2 + index) * 60
                         y: (parent.height / 2 - height / 2) + Math.sin(contentWrapper.globalOrbitAngle * 2 + index) * 30
