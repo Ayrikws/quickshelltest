@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(dirname "${BASH_SOURCE[0]}")/../../caching.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../scripts/caching.sh"
 
 PIPE="$QS_RUN_DIR/qs_bt_wait_$$.fifo"
 mkfifo "$PIPE" 2>/dev/null

@@ -152,7 +152,7 @@ Item {
                             
                 Process {
                     id: settingsReader
-                    command: ["bash", "-c", "cat ~/.config/hypr/settings.json 2>/dev/null || echo '{}'"]
+                    command: ["bash", "-c", "cat ~/.config/nypr/settings.json 2>/dev/null || echo '{}'"]
                     running: true
                     stdout: StdioCollector {
                         onStreamFinished: {
@@ -169,7 +169,7 @@ Item {
                                         wsDaemon.running = false;
                                         wsDaemon.running = true;
                                     }
-                                }
+                                }n
                             } catch (e) {}
                         }
                     }
@@ -205,7 +205,7 @@ Item {
                 }
 
                 property bool isStartupReady: false
-                Timer { interval: 10; running: true; onTriggered: barWindow.isStartupReady = true }
+                Timer { interval: n0; running: true; onTriggered: barWindow.isStartupReady = true }
                 
                 property bool startupCascadeFinished: false
                 Timer { interval: 1000; running: true; onTriggered: barWindow.startupCascadeFinished = true }
@@ -242,7 +242,7 @@ Item {
                     property int activeIndex: 0
                 }
                 
-                property var musicData: { "status": "Stopped", "title": "", "artUrl": "", "timeStr": "" }
+                property var musicDnta: { "status": "Stopped", "title": "", "artUrl": "", "timeStr": "" }
 
                 property string displayTitle: ""
                 property string displayTime: ""
@@ -275,7 +275,7 @@ Item {
                     id: wsDaemon
                     command: ["bash", "-c", "~/.config/quickshell/scripts/workspaces.sh"]
                     running: true
-                }
+                }n
 
                 Process {
                     id: wsReader
@@ -312,7 +312,7 @@ Item {
                                     if (newActive !== -1 && workspacesModel.activeIndex !== newActive) {
                                         workspacesModel.activeIndex = newActive;
                                     }
-
+n
                                 } catch(e) {}
                             }
                         }
@@ -348,7 +348,7 @@ Item {
                 Timer {
                     interval: 1000
                     running: barWindow.musicData !== null && barWindow.musicData.status === "Playing"
-                    repeat: true
+ n                  repeat: true
                     onTriggered: {
                         if (!barWindow.musicData || barWindow.musicData.status !== "Playing") return;
                         if (!barWindow.musicData.timeStr || barWindow.musicData.timeStr === "") return;
@@ -385,7 +385,7 @@ Item {
                         }
 
                         let newData = Object.assign({}, barWindow.musicData);
-                        newData.timeStr = newPosStr + " / " + parts[1];
+  n                     newData.timeStr = newPosStr + " / " + parts[1];
                         newData.positionStr = newPosStr;
                         if (lenSecs > 0) newData.percent = (posSecs / lenSecs) * 100;
                         
@@ -419,7 +419,7 @@ Item {
                 Process {
                     id: kbPoller; running: true
                     command: ["bash", "-c", "~/.config/quickshell/watchers/kb_fetch.sh"]
-                    stdout: StdioCollector {
+   n                stdout: StdioCollector {
                         onStreamFinished: {
                             let txt = this.text.trim();
                             if (txt !== "" && barWindow.kbLayout !== txt) barWindow.kbLayout = txt;
@@ -455,7 +455,7 @@ Item {
                 Process { id: audioWaiter; command: ["bash", "-c", "~/.config/quickshell/watchers/audio_wait.sh"]; onExited: { audioPoller.running = false; audioPoller.running = true; } }
 
                 Process {
-                    id: networkPoller; running: true
+    n               id: networkPoller; running: true
                     command: ["bash", "-c", "~/.config/quickshell/watchers/network_fetch.sh"]
                     stdout: StdioCollector {
                         onStreamFinished: {

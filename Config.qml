@@ -14,12 +14,9 @@ Item {
     // =========================================================================
     readonly property string homeDir: Quickshell.env("HOME")
     readonly property string hyprDir: homeDir + "/.config/hypr"
-    readonly property string qsScriptsDir: hyprDir + "/scripts/quickshell"
+    readonly property string qsScriptsDir:  "/scripts/quickshell"
     readonly property string cacheDir: paths.cacheDir
     
-    readonly property string settingsJsonPath: hyprDir + "/settings.json"
-    readonly property string weatherEnvPath: qsScriptsDir + "/calendar/.env"
-
     // State Tracking
     property bool dataReady: false
     property var rawSettings: ({})
