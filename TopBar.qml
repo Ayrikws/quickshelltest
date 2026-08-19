@@ -237,34 +237,29 @@ Item {
                 
                 property string kbLayout: "us"
                 
-                ListModel { 
-                    id: workspacesModel 
-                    property int activeIndex: 0
-                }
-                
-onMusicDataChanged: {
-    if (musicData && musicData.status !== "Stopped" && musicData.title !== "") {
-        displayTitle = musicData.title;
-        displayTime = musicData.timeStr;
-        displayArtUrl = musicData.artUrl;
-    }
+ListModel {
+    id: workspacesModel
+    property int activeIndex: 0
 }
 
-property bool isMediaActive: barWindow.musicData.status !== "Stopped"
-                          && barWindow.musicData.title !== ""
+property var musicData: ({
+    "status": "Stopped",
+    "title": "",
+    "artUrl": "",
+    "timeStr": ""
+})
 
-                property string displayTitle: ""
-                property string displayTime: ""
-                property string displayArtUrl: ""
+property string displayTitle: ""
+property string displayTime: ""
+property string displayArtUrl: ""
 
-                onMusicDataChanged: {
-                    if (musicData && musicData.status !== "Stopped" && musicData.title !== "") {
-                        displayTitle = musicData.title;
-                        displayTime = musicData.timeStr;
-                        displayArtUrl = musicData.artUrl;
-                    }
-                }
-
+onMusicDataChanged: {
+    if (musicData && musicData.status !== "Stopped" && musicData.title !== "") {
+        displayTitle = musicData.title
+        displayTime = musicData.timeStr
+        displayArtUrl = musicData.artUrl
+    }
+}
                 property bool isMediaActive: barWindow.musicData.status !== "Stopped" && barWindow.musicData.title !== ""
                 property bool isWifiOn: barWindow.wifiStatus.toLowerCase() === "enabled" || barWindow.wifiStatus.toLowerCase() === "on"
                 property bool isBtOn: barWindow.btStatus.toLowerCase() === "enabled" || barWindow.btStatus.toLowerCase() === "on"
