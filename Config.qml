@@ -9,18 +9,18 @@ Item {
 
     Caching { id: paths }
 
-    // =========================================================================
-    // Core Paths & Environment
-    // =========================================================================
-    readonly property string homeDir: Quickshell.env("HOME")
-    readonly property string hyprDir: homeDir + "/.config/hypr"
-    readonly property string qsScriptsDir:  "/scripts/quickshell"
-    readonly property string cacheDir: paths.cacheDir
-    
-    // State Tracking
-    property bool dataReady: false
-    property var rawSettings: ({})
-    property var rawEnvs: ({})
+// =========================================================================
+// Core Paths & Environment
+// =========================================================================
+readonly property string homeDir: Quickshell.env("HOME")
+readonly property string hyprDir: homeDir + "/.config/hypr"
+readonly property string qsScriptsDir: homeDir + "/.config/quickshell"
+readonly property string cacheDir: paths.cacheDir
+
+// State Tracking
+property bool dataReady: false
+property var rawSettings: ({})
+property var rawEnvs: ({})
 
     // =========================================================================
     // Generic Utilities (Use these in ANY widget!)

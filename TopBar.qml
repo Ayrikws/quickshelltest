@@ -242,7 +242,16 @@ Item {
                     property int activeIndex: 0
                 }
                 
-                property var musicDnta: { "status": "Stopped", "title": "", "artUrl": "", "timeStr": "" }
+onMusicDataChanged: {
+    if (musicData && musicData.status !== "Stopped" && musicData.title !== "") {
+        displayTitle = musicData.title;
+        displayTime = musicData.timeStr;
+        displayArtUrl = musicData.artUrl;
+    }
+}
+
+property bool isMediaActive: barWindow.musicData.status !== "Stopped"
+                          && barWindow.musicData.title !== ""
 
                 property string displayTitle: ""
                 property string displayTime: ""
@@ -275,7 +284,7 @@ Item {
                     id: wsDaemon
                     command: ["bash", "-c", "~/.config/quickshell/scripts/workspaces.sh"]
                     running: true
-                }n
+                }
 
                 Process {
                     id: wsReader
@@ -312,7 +321,7 @@ Item {
                                     if (newActive !== -1 && workspacesModel.activeIndex !== newActive) {
                                         workspacesModel.activeIndex = newActive;
                                     }
-n
+
                                 } catch(e) {}
                             }
                         }
@@ -348,7 +357,7 @@ n
                 Timer {
                     interval: 1000
                     running: barWindow.musicData !== null && barWindow.musicData.status === "Playing"
- n                  repeat: true
+                    repeat: true
                     onTriggered: {
                         if (!barWindow.musicData || barWindow.musicData.status !== "Playing") return;
                         if (!barWindow.musicData.timeStr || barWindow.musicData.timeStr === "") return;
@@ -385,7 +394,7 @@ n
                         }
 
                         let newData = Object.assign({}, barWindow.musicData);
-  n                     newData.timeStr = newPosStr + " / " + parts[1];
+                       newData.timeStr = newPosStr + " / " + parts[1];
                         newData.positionStr = newPosStr;
                         if (lenSecs > 0) newData.percent = (posSecs / lenSecs) * 100;
                         
@@ -419,7 +428,7 @@ n
                 Process {
                     id: kbPoller; running: true
                     command: ["bash", "-c", "~/.config/quickshell/watchers/kb_fetch.sh"]
-   n                stdout: StdioCollector {
+                    stdout: StdioCollector {
                         onStreamFinished: {
                             let txt = this.text.trim();
                             if (txt !== "" && barWindow.kbLayout !== txt) barWindow.kbLayout = txt;
@@ -455,7 +464,7 @@ n
                 Process { id: audioWaiter; command: ["bash", "-c", "~/.config/quickshell/watchers/audio_wait.sh"]; onExited: { audioPoller.running = false; audioPoller.running = true; } }
 
                 Process {
-    n               id: networkPoller; running: true
+                   id: networkPoller; running: true
                     command: ["bash", "-c", "~/.config/quickshell/watchers/network_fetch.sh"]
                     stdout: StdioCollector {
                         onStreamFinished: {
